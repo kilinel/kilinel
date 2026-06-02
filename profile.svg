@@ -44,7 +44,7 @@
 
   <!-- RIGHT -->
   <text x="406" y="72" fill="#58a6ff" font-weight="700">-- [ git status ]</text>
-  <text x="406" y="94" fill="#e6edf3">  commits  &gt; <tspan id="commit_data" fill="#f0f6fc" font-weight="700">20</tspan></text>
+  <text x="406" y="94" fill="#e6edf3">  commits  &gt; <tspan id="commit_data" fill="#f0f6fc" font-weight="700">21</tspan></text>
   <text x="406" y="112" fill="#e6edf3">  repos    &gt; <tspan id="repo_data" fill="#f0f6fc" font-weight="700">15</tspan></text>
   <text x="406" y="130" fill="#e6edf3">  stars    &gt; <tspan id="star_data" fill="#f0f6fc" font-weight="700">0</tspan></text>
 
