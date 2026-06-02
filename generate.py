@@ -8,14 +8,14 @@ from lxml import etree
 
 HEADERS = {'authorization': 'token ' + os.environ['ACCESS_TOKEN']}
 USER_NAME = os.environ['USER_NAME']
-BIRTHDAY = datetime.datetime(2006,6,1)
+BIRTHDAY = datetime.datetime(2006,2,4)
 SVG_FILE = 'profile.svg'
 
 #-
 
 
 def uptime():
-    diff = relativedelta.relativedelta(datetime.datetime.today(), BIRTHDAY)
+    diff = relativedelta.relativedelta(datetime.datetime.now(), BIRTHDAY)
     def plural(n, word):
         return f"{n} {word}{'s' if n != 1 else ''}"
     return '{}, {}, {}'.format(
@@ -37,7 +37,7 @@ def fetch(query, variaveis):
     raise Exception(f'GitHub API error {r.status_code} : {r.text}')
 
 def get_status():
-    ano = datetime.datetime.utcnow().year
+    ano = datetime.datetime.now(datetime.UTC).year
     inicio = f'{ano}-01-01T00:00:00Z'
     fim = f'{ano}-12-31T23:59:59Z'
 
@@ -68,28 +68,27 @@ def get_status():
 
 
 
-def update_svg(commits,repos,stars):
-
+def update_svg(commits, repos, stars):
     tree = etree.parse(SVG_FILE)
     root = tree.getroot()
 
     fields = {
         'uptime_data': uptime(),
         'commit_data': f'{commits:,}',
-        'repo_data': str(repos),
-        'star_data': str(stars),
+        'repo_data':   str(repos),
+        'star_data':   str(stars),
     }
 
     for element_id, value in fields.items():
         el = root.find(f".//*[@id='{element_id}']")
         if el is not None:
             el.text = value
+            print(f'atualizado: {element_id} = {value}')
         else:
-            print(f'[aviso] id "{element_id}" não encontrado no SVG')
+            print(f'[aviso] id "{element_id}" nao encontrado')
 
     tree.write(SVG_FILE, encoding='utf-8', xml_declaration=True)
     print('profile.svg atualizado!')
-
 
 if __name__ == '__main__':
     print('buscando dados...')
