@@ -1,0 +1,36 @@
+name: Update profile SVG
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # todo dia meia-noite (UTC)
+  workflow_dispatch:       # permite rodar na mão pelo GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests lxml python-dateutil
+
+      - name: Rodar generate.py
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+        run: python generate.py
+
+      - name: Commit e push do SVG atualizado
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add profile.svg
+          git commit -m "chore: update profile svg" || echo "nada mudou, sem commit"
+          git push
