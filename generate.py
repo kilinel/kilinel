@@ -6,7 +6,7 @@ from lxml import etree
 
 # -- config
 
-HEADERS = {'authorization':'token' + os.environ['ACCESS_TOKEN']}
+HEADERS = {'authorization': 'token ' + os.environ['ACCESS_TOKEN']}
 USER_NAME = os.environ['USER_NAME']
 BIRTHDAY = datetime.datetime(2006,6,1)
 SVG_FILE = 'profile.svg'
@@ -28,7 +28,7 @@ def uptime():
 def fetch(query, variaveis):
 
     r = requests.post(
-        'https://api.github.com/graphsql',
+        'https://api.github.com/graphql',
         json={'query': query, 'variables': variaveis},
         headers=HEADERS,
     )
@@ -81,7 +81,7 @@ def update_svg(commits,repos,stars):
     }
 
     for element_id, value in fields.items():
-        el = root.find(f".//*[@id='{element_id}]")
+        el = root.find(f".//*[@id='{element_id}']")
         if el is not None:
             el.text = value
         else:
